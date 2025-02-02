@@ -34,7 +34,13 @@ vim.opt.wrap = false
 vim.opt.laststatus = 3
 vim.opt.termguicolors = true
 vim.diagnostic.config({
-	update_in_insert = true
+	update_in_insert = true,
+	virtual_text = false,
+	virtual_lines = {
+		current_line = true
+	},
+	signs = true,
+	underline = true
 })
 
 -- Setup lazy.nvim
@@ -278,7 +284,7 @@ require("lazy").setup({
 				local LSPStatus = {
 					condition = conditions.lsp_attached,
 					init = function(self)
-						local lsp_clients = vim.lsp.get_active_clients()
+						local lsp_clients = vim.lsp.get_clients()
 						self.lsp_names = {}
 						for _, client in pairs(lsp_clients) do
 							table.insert(self.lsp_names, client.name)
@@ -388,3 +394,21 @@ require("lazy").setup({
 	-- Automatically check for plugin updates
 	checker = { enabled = true },
 })
+
+-- Change all diagnostic highlights to use curly lines
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", {
+	undercurl = true,
+	sp = vim.api.nvim_get_hl_by_name("DiagnosticError", true).foreground
+});
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", {
+	undercurl = true,
+	sp = vim.api.nvim_get_hl_by_name("DiagnosticWarn", true).foreground
+});
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", {
+	undercurl = true,
+	sp = vim.api.nvim_get_hl_by_name("DiagnosticInfo", true).foreground
+});
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", {
+	undercurl = true,
+	sp = vim.api.nvim_get_hl_by_name("DiagnosticHint", true).foreground
+});
