@@ -2,6 +2,56 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Function to get the today's coding time using WakaTime
+local uv = require("luv")
+
+local current_time = ""
+local function set_interval(interval, callback)
+    local timer = uv.new_timer()
+    local function ontimeout()
+        callback(timer)
+    end
+    uv.timer_start(timer, interval, interval, ontimeout)
+    return timer
+end
+
+local function update_wakatime()
+    local stdin = uv.new_pipe()
+    local stdout = uv.new_pipe()
+    local stderr = uv.new_pipe()
+
+    local handle, pid =
+        uv.spawn(
+        "/home/ashley/.wakatime/wakatime-cli",
+        {
+            args = {"--today"},
+            stdio = {stdin, stdout, stderr}
+        },
+        function(code, signal) -- on exit
+            stdin:close()
+            stdout:close()
+            stderr:close()
+        end
+    )
+
+    uv.read_start(
+        stdout,
+        function(err, data)
+            assert(not err, err)
+            if data then
+                current_time = "|  " .. data:sub(1, #data - 2)
+            end
+        end
+    )
+end
+
+update_wakatime()
+set_interval(5000, update_wakatime)
+
+local function get_wakatime()
+    return current_time
+end
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -280,6 +330,24 @@ require("lazy").setup({
 
 				}
 
+				local WakaTimeProvider = {
+					init = function(self)
+						self.output = get_wakatime()
+					end,
+					provider = function(self)
+						return self.output or ""
+					end,
+					update = {
+						"BufEnter",
+						"CursorHold",
+						callback = function(self)
+							self.output = get_wakatime()
+							vim.cmd("redrawstatus")
+						end,
+					},
+					hl = { bold = true }
+				}
+
 				-- LSP status component
 				local LSPStatus = {
 					condition = conditions.lsp_attached,
@@ -295,6 +363,9 @@ require("lazy").setup({
 					end,
 					hl = { bold = true },
 					-- LSP server name
+					{
+						provider = " | "
+					},
 					{
 						provider = function(self)
 							return table.concat(self.lsp_names, ", ")
@@ -352,6 +423,7 @@ require("lazy").setup({
 						provider = "%=",
 						hl = { bold = true }
 					}, -- right align
+					WakaTimeProvider,
 					LSPStatus,
 					{
 						provider = " ",
