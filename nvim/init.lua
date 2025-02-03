@@ -149,7 +149,110 @@ require("lazy").setup({
 			end
 		},
 
-		-- File Explorer
+		-- Tabline
+		{
+			"akinsho/bufferline.nvim",
+			version = "*",
+			opts = {
+				options = {
+					diagnostics = "nvim_lsp",
+					offsets = {
+						{
+							filetype = "NvimTree",
+							text = "File Explorer",
+							text_align = "center",
+							highlight = "Directory"
+						}
+					}
+				}
+			}
+		},
+
+		-- Snacks (dashboard)
+		{
+			"folke/snacks.nvim",
+			priority = 1000,
+			lazy = false,
+			---@type snacks.Config
+			opts = {
+				dashboard = {
+					sections = {
+						{
+							section = "header",
+						},
+						{
+							pane = 2,
+							section = "terminal",
+							cmd = "colorscript -e square",
+							height = 5,
+							padding = 1,
+						},
+						{
+							section = "keys",
+							gap = 1,
+							padding = 2
+						},
+						{
+							pane = 2,
+							icon = " ",
+							desc = "Browse Repo",
+							padding = 1,
+							key = "b",
+							action = function()
+								Snacks.gitbrowse()
+							end,
+						},
+						function()
+							local in_git = Snacks.git.get_root() ~= nil
+							local cmds = {
+								{
+									title = "Notifications",
+									cmd = "env GH_PAGER=cat gh notify -s -a -n5 | sed -E \' s/\\x1b\\[[0-9;]*m//g; s/\\xC2\\xA0/ /g; s/^[[:space:]]+//;\'",
+									action = function()
+										vim.ui.open("https://github.com/notifications")
+									end,
+									key = "n",
+									icon = " ",
+									height = 5,
+									enabled = true,
+								},
+								{
+									title = "Open Issues",
+									cmd = "env GH_PAGER=cat gh issue list -L 3 --json number,title,updatedAt --template \'{{tablerow \"ID\" \"TITLE\" \"UPDATED\"}}{{range .}}{{tablerow (printf \"#%v\" .number | autocolor \"green\") .title (print \"about \" (timeago .updatedAt))}}{{end}}\'",
+									key = "i",
+									action = function()
+										vim.fn.jobstart("gh issue list --web", { detach = true })
+									end,
+									icon = " ",
+									height = 4,
+								},
+								{
+									icon = " ",
+									title = "Git Status",
+									cmd = "git --no-pager diff --stat -B -M -C",
+									height = 10,
+								},
+							}
+							return vim.tbl_map(function(cmd)
+								return vim.tbl_extend("force", {
+									pane = 2,
+									section = "terminal",
+									enabled = in_git,
+									padding = 1,
+									ttl = 5 * 60,
+									indent = 3,
+								}, cmd)
+							end, cmds)
+						end,
+						{ section = "startup" },
+					},
+
+				},
+				picker = { enabled = true },
+			},
+		},
+
+		-- File explorer
 		{
 			"nvim-tree/nvim-tree.lua",
 			version = "*",
@@ -435,25 +538,6 @@ require("lazy").setup({
 				-- Setup the status line
 				heirline.setup({ statusline = StatusLine })
 			end,
-		},
-
-		-- Tabline
-		{
-			"akinsho/bufferline.nvim",
-			version = "*",
-			opts = {
-				options = {
-					diagnostics = "nvim_lsp",
-					offsets = {
-						{
-							filetype = "NvimTree",
-							text = "File Explorer",
-							text_align = "center",
-							highlight = "Directory"
-						}
-					}
-				}
-			}
 		},
 
 		-- Wakatime
