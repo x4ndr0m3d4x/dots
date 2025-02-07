@@ -1,3 +1,7 @@
+--- DISABLE NETRW ---
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 --- LEADER ---
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
@@ -7,24 +11,21 @@ vim.opt.tabstop = 4 -- A tab counts as 4 spaces
 vim.opt.shiftwidth = 4 -- How many spaces for each level of autoindent
 vim.opt.expandtab = true -- When pressing <Tab> in insert mode, insert the appropriate amount of spaces instead
 
---- SEARCH ---
-vim.opt.smartcase = true -- Respect case when searching using uppercase characters, ignore otherwise
-
 --- STATUS LINE ---
--- vim.opt.cmdheight = 0
+-- vim.opt.cmdheight = 0 -- Effectively hide the cmd line (replaces statusline while in command mode)
 vim.opt.laststatus = 3 -- Always show a status line, but only in the last window
 
 --- CURSOR ---
 vim.opt.scrolloff = 5 -- How many lines (at least) to keep above or below the cursor
 vim.opt.sidescrolloff = 5 -- How many columns (at least) to keep to the left or to the right of the cursor
-vim.opt.cursorline = true -- High
+vim.opt.cursorline = true -- Highlight the line the cursor is currently at 
 
-
-vim.opt.selection = "old" -- Do not allow including the last character while selecting
-vim.opt.clipboard = "unnamedplus"
-
-vim.opt.wrap = false -- Whether to wrap lines longer than the width of the window
+--- MISC ---
+vim.opt.smartcase = true -- Respect case when searching using uppercase characters, ignore otherwise
 vim.opt.termguicolors = true -- Enabled 24-bit RGB color
+vim.opt.wrap = false -- Whether to wrap lines longer than the width of the window
+vim.opt.selection = "old" -- Do not allow including the last character while selecting
+vim.opt.clipboard = "unnamedplus" -- Use system clipboard for yank/paste
 
 --- LINE NUMBER ---
 vim.opt.number = true -- Show the line numbers in front of each line
@@ -39,3 +40,21 @@ vim.diagnostic.config({
 	signs = true, -- Do show sign diagnostics for a given line in the sign column
 	underline = true -- Underline a given token for diagnostics
 })
+
+-- Change all diagnostic highlights to use curly lines
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", {
+	undercurl = true,
+	sp = vim.api.nvim_get_hl_by_name("DiagnosticError", true).foreground
+});
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", {
+	undercurl = true,
+	sp = vim.api.nvim_get_hl_by_name("DiagnosticWarn", true).foreground
+});
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", {
+	undercurl = true,
+	sp = vim.api.nvim_get_hl_by_name("DiagnosticInfo", true).foreground
+});
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", {
+	undercurl = true,
+	sp = vim.api.nvim_get_hl_by_name("DiagnosticHint", true).foreground
+});
