@@ -14,8 +14,6 @@ return {
         }
     },
     config = function()
-        require("lspconfig").lua_ls.setup {}
-
         -- Format buffer on save
         vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
