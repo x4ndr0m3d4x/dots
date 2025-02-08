@@ -1,6 +1,8 @@
---- DISABLE NETRW ---
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+--- DISABLE DEFAULT PROVIDERS ---
+vim.g.loaded_node_provider = 1
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 
 --- LEADER ---
 vim.g.mapleader = " "
@@ -32,29 +34,23 @@ vim.opt.number = true -- Show the line numbers in front of each line
 vim.opt.relativenumber = true -- Show the line numbers relative to the current cursor position
 
 --- DIAGNOSTICS ---
-vim.opt.signcolumn = "yes" -- ALways draw a sign column
 vim.diagnostic.config({
 	update_in_insert = false, -- Do not update diagnostics when in insert mode
 	virtual_text = false, -- Do not show virtual text (diagnostics at the end of the line)
-	virtual_lines = false, -- Do not show virtual lines (under a given line)
-	signs = true, -- Do show sign diagnostics for a given line in the sign column
-	underline = true -- Underline a given token for diagnostics
+    virtual_lines = false, -- Do not show virtual lines (under a given line)
+    underline = true, -- Underline a given token for diagnostics
+    signs = { -- Show line diagnostics by coloring the line number
+        text = {
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.HINT] = "",
+            [vim.diagnostic.severity.INFO] = "",
+        },
+        numhl = {
+            [vim.diagnostic.severity.WARN] = 'WarningMsg',
+            [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
+            [vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
+            [vim.diagnostic.severity.HINT] = 'DiagnosticHint',
+        }
+    }
 })
-
--- Change all diagnostic highlights to use curly lines
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", {
-	undercurl = true,
-	sp = vim.api.nvim_get_hl_by_name("DiagnosticError", true).foreground
-});
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", {
-	undercurl = true,
-	sp = vim.api.nvim_get_hl_by_name("DiagnosticWarn", true).foreground
-});
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", {
-	undercurl = true,
-	sp = vim.api.nvim_get_hl_by_name("DiagnosticInfo", true).foreground
-});
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", {
-	undercurl = true,
-	sp = vim.api.nvim_get_hl_by_name("DiagnosticHint", true).foreground
-});
