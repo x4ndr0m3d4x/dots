@@ -1,6 +1,5 @@
 # Ignore everything...
 *
-nvim/lazy-lock.json
 
 # ...except for this
 !.gitignore
@@ -8,3 +7,6 @@ nvim/lazy-lock.json
 !nvim/**/*
 !eww
 !eww/**/*
+
+# But add lazy-lock.json
+nvim/lazy-lock.json
