@@ -14,7 +14,7 @@ vim.opt.shiftwidth = 4   -- How many spaces for each level of autoindent
 vim.opt.expandtab = true -- When pressing <Tab> in insert mode, insert the appropriate amount of spaces instead
 
 --- STATUS LINE ---
--- vim.opt.cmdheight = 0 -- Effectively hide the cmd line (replaces statusline while in command mode)
+vim.opt.cmdheight = 0  -- Effectively hide the cmd line (replaces statusline while in command mode)
 vim.opt.laststatus = 3 -- Always show a status line, but only in the last window
 
 --- CURSOR ---

@@ -38,3 +38,5 @@ map("n", "L", show_line_virtual_diagnostics, { noremap = true, silent = true })
 map("n", "<C-n>", MiniFiles.open, { desc = "Open file explorer", noremap = true, silent = true })
 map("n", "<leader>o", function() Snacks.picker.buffers({ focus = "list" }) end,
     { desc = "Browse open buffers", noremap = true, silent = true })
+map("n", "<leader>g", function() Snacks.picker.grep({ focus = "list" }) end,
+    { desc = "Grep", noremap = true, silent = true })

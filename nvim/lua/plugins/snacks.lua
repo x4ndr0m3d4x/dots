@@ -2,7 +2,8 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     opts = {
-        picker = {},
+        picker = {}, -- Telescope alternative
+        input = {},  -- Prettier input field
         dashboard = {
             sections = {
                 { section = "header" },

@@ -1,5 +1,6 @@
 # Ignore everything...
 *
+nvim/lazy-lock.json
 
 # ...except for this
 !.gitignore
