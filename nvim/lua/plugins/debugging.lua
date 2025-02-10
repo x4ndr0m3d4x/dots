@@ -72,7 +72,9 @@ return {
                 program = function()
                     local notify = require("mini.notify").make_notify({ ERROR = { duration = 2000 }, INFO = { duration = 2000 } })
                     -- Cargo build (with debug by default)
-                    local cmd = "cargo build -q"
+                    -- HACK: Disable output with the `-q` flag and allow all warnings
+                    -- with `RUSTFLAGS=-Awarnings`
+                    local cmd = "RUSTFLAGS=-Awarnings cargo build -q"
                     notify("Compiling with: " .. cmd, vim.log.levels.INFO)
 
                     local ret = os.execute(cmd)
@@ -281,6 +283,7 @@ return {
 
         ---@diagnostic disable-next-line: missing-fields
         ui.setup({
+            ---@diagnostic disable-next-line: missing-fields
             controls = {
                 enabled = false
             },
@@ -288,20 +291,16 @@ return {
                 {
                     elements = {
                         {
-                            id = "repl",
-                            size = 0.25
-                        },
-                        {
                             id = "stacks",
-                            size = 0.25
+                            size = 0.33
                         },
                         {
                             id = "breakpoints",
-                            size = 0.25
+                            size = 0.33
                         },
                         {
                             id = "scopes",
-                            size = 0.25
+                            size = 0.33
                         }
                     },
                     position = "left",
@@ -310,7 +309,7 @@ return {
                 {
                     elements = {
                         {
-                            id = "console",
+                            id = "repl",
                             size = 1
                         }
                     },
