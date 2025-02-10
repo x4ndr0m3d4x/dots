@@ -31,7 +31,28 @@ return {
 
         dap.configurations.cpp = {
             {
-                name = "Debug",
+                name = "Debug - Compile Automatically",
+                type = "lldb",
+                request = "launch",
+                program = function()
+                    local source = vim.fn.expand("%:p")
+                    local output = vim.fn.expand("%:r")
+                    local cmd = string.format("g++ -std=c++20 -g %s -o %s", source, output)
+                    print("Compiling with: " .. cmd)
+
+                    local ret = os.execute(cmd)
+                    if ret ~= 0 then
+                        error("Compilation failed")
+                    end
+
+                    return output
+                end,
+                cwd = "${workspaceFolder}",
+                stopOnEntry = false,
+                args = {}
+            },
+            {
+                name = "Debug - Manually Select",
                 type = "lldb",
                 request = "launch",
                 program = function()
@@ -45,7 +66,68 @@ return {
 
         dap.configurations.rust = {
             {
-                name = "Launch",
+                name = "Debug - Compile Automatically",
+                type = "lldb",
+                request = "launch",
+                program = function()
+                    -- Cargo build (with debug by default)
+                    local cmd = "cargo build"
+                    print("Compiling with: " .. cmd)
+
+                    local ret = os.execute(cmd)
+                    if ret ~= 0 then
+                        error("Compilation failed")
+                    end
+
+                    -- Extract the name from Cargo.toml
+                    local cargo_toml = io.open("Cargo.toml", "r")
+                    if not cargo_toml then
+                        error("Could not locate Cargo.toml file")
+                    end
+
+                    local package_name = nil
+                    for line in cargo_toml:lines() do
+                        local match = line:match('^name%s*=%s*"(.-)"')
+                        if match then
+                            package_name = match
+                            break
+                        end
+                    end
+                    cargo_toml:close()
+
+                    if not package_name then
+                        error("Package name not found in Cargo.toml")
+                    end
+
+                    local executable = "target/debug/" .. package_name
+                    return executable
+                end,
+                cwd = "${workspaceFolder}",
+                stopOnEntry = false,
+                args = {},
+                initCommands = function()
+                    -- Find out where to look for the pretty printer Python module
+                    local rustc_sysroot = vim.fn.trim(vim.fn.system("rustc --print sysroot"))
+
+                    local script_import = 'command script import "' ..
+                        rustc_sysroot .. '/lib/rustlib/etc/lldb_lookup.py"'
+                    local commands_file = rustc_sysroot .. "/lib/rustlib/etc/lldb_commands"
+
+                    local commands = {}
+                    local file = io.open(commands_file, "r")
+                    if file then
+                        for line in file:lines() do
+                            table.insert(commands, line)
+                        end
+                        file:close()
+                    end
+                    table.insert(commands, 1, script_import)
+
+                    return commands
+                end
+            },
+            {
+                name = "Debug - Manually Select",
                 type = "lldb",
                 request = "launch",
                 program = function()
