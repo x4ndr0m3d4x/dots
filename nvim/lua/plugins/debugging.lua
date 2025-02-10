@@ -193,7 +193,46 @@ return {
         vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#cdd6f4", bg = "#45475a" })
         vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "", linehl = "", numhl = "DapBreakpoint" })
 
-        ui.setup()
+        ---@diagnostic disable-next-line: missing-fields
+        ui.setup({
+            controls = {
+                enabled = false
+            },
+            layouts = {
+                {
+                    elements = {
+                        {
+                            id = "repl",
+                            size = 0.25
+                        },
+                        {
+                            id = "stacks",
+                            size = 0.25
+                        },
+                        {
+                            id = "breakpoints",
+                            size = 0.25
+                        },
+                        {
+                            id = "scopes",
+                            size = 0.25
+                        }
+                    },
+                    position = "left",
+                    size = 40
+                },
+                {
+                    elements = {
+                        {
+                            id = "console",
+                            size = 1
+                        }
+                    },
+                    position = "bottom",
+                    size = 10
+                }
+            }
+        })
         ---@diagnostic disable-next-line: missing-parameter
         virtual_text.setup()
     end

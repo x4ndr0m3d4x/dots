@@ -1,8 +1,14 @@
+require("statuscolumn")
+
 --- DISABLE DEFAULT PROVIDERS ---
 vim.g.loaded_node_provider = 1
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
+
+--- STATUSCOLUMN ---
+vim.o.numberwidth = 4                           -- Force the statuscolumn to always be 4 chars wide
+vim.o.statuscolumn = "%!v:lua.MyStatusColumn()" -- Use a custom statuscolumn function
 
 --- LEADER ---
 vim.g.mapleader = " "
@@ -28,10 +34,10 @@ vim.opt.termguicolors = true      -- Enabled 24-bit RGB color
 vim.opt.wrap = false              -- Whether to wrap lines longer than the width of the window
 vim.opt.selection = "old"         -- Do not allow including the last character while selecting
 vim.opt.clipboard = "unnamedplus" -- Use system clipboard for yank/paste
+vim.opt.colorcolumn = "80"        -- A highlighted column at 80 chars
 
 --- LINE NUMBER ---
-vim.opt.number = true         -- Show the line numbers in front of each line
-vim.opt.relativenumber = true -- Show the line numbers relative to the current cursor position
+vim.opt.number = true -- Show the line numbers in front of each line
 
 --- DIAGNOSTICS ---
 vim.diagnostic.config({
