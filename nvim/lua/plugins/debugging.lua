@@ -17,10 +17,8 @@ return {
         local ui = require("dapui")
         local virtual_text = require("nvim-dap-virtual-text")
 
-        -- Open UI automatically
-        dap.listeners.before.attach.dapui_config = function() ui.open() end
+        -- Open UI automatically (if everything initialized correctly)
         dap.listeners.before.launch.dapui_config = function() ui.open() end
-        dap.listeners.before.event_terminated.dapui_config = function() ui.close() end
 
         --- LLDB-DAP (C++ and Rust) ---
         dap.adapters.lldb = {
@@ -44,7 +42,7 @@ return {
                     local ret = os.execute(cmd)
                     if ret ~= 0 then
                         notify("Compilation failed", vim.log.levels.ERROR)
-                        return
+                        return dap.ABORT
                     end
 
                     return output
@@ -80,14 +78,14 @@ return {
                     local ret = os.execute(cmd)
                     if ret ~= 0 then
                         notify("Compilation failed")
-                        return
+                        return dap.ABORT
                     end
 
                     -- Extract the name from Cargo.toml
                     local cargo_toml = io.open("Cargo.toml", "r")
                     if not cargo_toml then
                         notify("Could not locate Cargo.toml file", vim.log.levels.ERROR)
-                        return
+                        return dap.ABORT
                     end
 
                     local package_name = nil
@@ -102,7 +100,7 @@ return {
 
                     if not package_name then
                         notify("Package name not found in Cargo.toml", vim.log.levels.ERROR)
-                        return
+                        return dap.ABORT
                     end
 
                     local executable = "target/debug/" .. package_name
