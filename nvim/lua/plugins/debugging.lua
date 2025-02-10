@@ -35,14 +35,16 @@ return {
                 type = "lldb",
                 request = "launch",
                 program = function()
+                    local notify = require("mini.notify").make_notify({ ERORR = { duration = 2000 }, INFO = { duration = 2000 } })
                     local source = vim.fn.expand("%:p")
                     local output = vim.fn.expand("%:r")
                     local cmd = string.format("g++ -std=c++20 -g %s -o %s", source, output)
-                    print("Compiling with: " .. cmd)
+                    notify("Compiling with: " .. cmd, vim.log.levels.INFO)
 
                     local ret = os.execute(cmd)
                     if ret ~= 0 then
-                        error("Compilation failed")
+                        notify("Compilation failed", vim.log.levels.ERROR)
+                        return
                     end
 
                     return output
@@ -70,19 +72,22 @@ return {
                 type = "lldb",
                 request = "launch",
                 program = function()
+                    local notify = require("mini.notify").make_notify({ ERROR = { duration = 2000 }, INFO = { duration = 2000 } })
                     -- Cargo build (with debug by default)
-                    local cmd = "cargo build"
-                    print("Compiling with: " .. cmd)
+                    local cmd = "cargo build -q"
+                    notify("Compiling with: " .. cmd, vim.log.levels.INFO)
 
                     local ret = os.execute(cmd)
                     if ret ~= 0 then
-                        error("Compilation failed")
+                        notify("Compilation failed")
+                        return
                     end
 
                     -- Extract the name from Cargo.toml
                     local cargo_toml = io.open("Cargo.toml", "r")
                     if not cargo_toml then
-                        error("Could not locate Cargo.toml file")
+                        notify("Could not locate Cargo.toml file", vim.log.levels.ERROR)
+                        return
                     end
 
                     local package_name = nil
@@ -96,7 +101,8 @@ return {
                     cargo_toml:close()
 
                     if not package_name then
-                        error("Package name not found in Cargo.toml")
+                        notify("Package name not found in Cargo.toml", vim.log.levels.ERROR)
+                        return
                     end
 
                     local executable = "target/debug/" .. package_name
