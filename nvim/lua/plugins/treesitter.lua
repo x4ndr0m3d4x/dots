@@ -11,7 +11,7 @@ return {
                 "gdscript", "gdshader", "git_config", "git_rebase", "gitattributes",
                 "gitcommit", "gitignore", "html", "json", "lua", "markdown",
                 "markdown_inline", "python", "rust", "scss", "sql", "svelte",
-                "toml", "typescript", "typst", "vimdoc"
+                "toml", "typescript", "typst", "vimdoc", "qmljs"
             },
             sync_install = false,
             auto_install = true,
