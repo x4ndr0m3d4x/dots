@@ -4,7 +4,10 @@ return {
     lazy = false,
     config = function()
         require("mason-lspconfig").setup({
-            ensure_installed = { "clangd", "tailwindcss", "html", "ts_ls", "lua_ls", "pyright", "rust_analyzer", "tinymist", "svelte" }
+            ensure_installed = {
+                "clangd", "tailwindcss", "html", "ts_ls", "lua_ls", "pyright", "rust_analyzer", "tinymist", "svelte",
+                "csharp_ls", "ltex"
+            }
         })
 
         local capabilities = require("blink.cmp").get_lsp_capabilities()

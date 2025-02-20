@@ -4,6 +4,7 @@ return {
     opts = {
         picker = {}, -- Telescope alternative
         input = {},  -- Prettier input field
+        image = {},  -- Inline image and math rendering
         dashboard = {
             sections = {
                 { section = "header" },
