@@ -6,7 +6,7 @@ return {
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "clangd", "tailwindcss", "html", "ts_ls", "lua_ls", "pyright", "rust_analyzer", "tinymist", "svelte",
-                "csharp_ls", "ltex"
+                "ltex", "roslyn"
             }
         })
 
