@@ -41,7 +41,7 @@ vim.opt.number = true -- Show the line numbers in front of each line
 
 --- DIAGNOSTICS ---
 vim.diagnostic.config({
-    update_in_insert = false, -- Do not update diagnostics when in insert mode
+    update_in_insert = true, -- Update diagnostics when in insert mode
     virtual_text = false,     -- Do not show virtual text (diagnostics at the end of the line)
     virtual_lines = false,    -- Do not show virtual lines (under a given line)
     underline = true,         -- Underline a given token for diagnostics
