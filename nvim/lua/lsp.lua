@@ -23,13 +23,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 vim.lsp.config('*', { root_markers = { '.git' } })
 
-vim.lsp.enable("rust-analyzer")
-vim.lsp.enable("clangd")
-vim.lsp.enable("tailwindcss")
-vim.lsp.enable("html")
-vim.lsp.enable("typescript")
-vim.lsp.enable("lua")
-vim.lsp.enable("svelte")
-vim.lsp.enable("pyright")
-vim.lsp.enable("tinymist")
-vim.lsp.enable("ltex-plus")
+vim.lsp.enable({
+    "rust-analyzer",
+    "clangd",
+    "tailwindcss",
+    "html",
+    "typescript",
+    "lua",
+    "svelte",
+    "pyright",
+    "tinymist",
+    "ltex-plus",
+    "r"
+})
