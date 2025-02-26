@@ -6,6 +6,12 @@ function M.get()
     local placed = vim.fn.sign_getplaced(bufnr, { lnum = lnum, group = '*' })
     local has_breakpoint = false
     local has_stopped = false
+    local is_wrapped = vim.v.virtnum ~= 0  -- Check if this is a wrapped line
+
+    -- If this is a wrapped line, return empty space to maintain alignment
+    if is_wrapped then
+        return " "
+    end
 
     for _, group in ipairs(placed) do
         for _, sign in ipairs(group.signs) do
@@ -24,7 +30,21 @@ function M.get()
     elseif has_breakpoint then
         return "B"
     else
-        return tostring(lnum) -- Default to the line number
+        local total_lines = vim.fn.line('$')
+        local number_width = vim.o.numberwidth - 1 -- Account for Vim's numberwidth behavior
+        local current_line = vim.fn.line('.')
+
+        if lnum == current_line then
+            -- Current line: left-aligned with highlight
+            local line_number = tostring(lnum)
+            local padding = string.rep(" ", number_width - #line_number)
+            return "%#CursorLineNr#" .. line_number .. padding .. "%*"
+        else
+            -- Other lines: right-aligned to fill the available space completely
+            local line_number = tostring(lnum)
+            local padding = string.rep(" ", number_width - #line_number)
+            return padding .. line_number
+        end
     end
 end
 
