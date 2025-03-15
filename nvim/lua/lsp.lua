@@ -33,6 +33,6 @@ vim.lsp.enable({
     "svelte",
     "pyright",
     "tinymist",
-    "ltex-plus",
+    "harper-ls",
     "r"
 })
