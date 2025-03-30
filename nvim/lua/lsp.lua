@@ -4,17 +4,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
         if not client then return end
 
-        -- BUG: This removes diagnostics on save until I type again
-        -- Format on save
         ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
-        -- if client.supports_method("textDocument/formatting") then
-        --     vim.api.nvim_create_autocmd("BufWritePre", {
-        --         buffer = ev.buf,
-        --         callback = function()
-        --             vim.lsp.buf.format({ bufnr = ev.buf, id = client.id })
-        --         end
-        --     })
-        -- end
+        if client.supports_method("textDocument/formatting") then
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                buffer = ev.buf,
+                callback = function()
+                    vim.lsp.buf.format({ bufnr = ev.buf, id = client.id })
+                end
+            })
+        end
 
         -- Enable the LSP
         vim.lsp.completion.enable(true, ev.data.client_id, ev.buf)

@@ -42,10 +42,10 @@ vim.opt.number = true -- Show the line numbers in front of each line
 --- DIAGNOSTICS ---
 vim.diagnostic.config({
     update_in_insert = true, -- Update diagnostics when in insert mode
-    virtual_text = false,     -- Do not show virtual text (diagnostics at the end of the line)
-    virtual_lines = false,    -- Do not show virtual lines (under a given line)
-    underline = true,         -- Underline a given token for diagnostics
-    signs = {                 -- Show line diagnostics by coloring the line number
+    virtual_text = false,    -- Do not show virtual text (diagnostics at the end of the line)
+    virtual_lines = false,   -- Do not show virtual lines (under a given line)
+    underline = true,        -- Underline a given token for diagnostics
+    signs = {                -- Show line diagnostics by coloring the line number
         text = {
             [vim.diagnostic.severity.ERROR] = "",
             [vim.diagnostic.severity.WARN] = "",
@@ -58,5 +58,6 @@ vim.diagnostic.config({
             [vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
             [vim.diagnostic.severity.HINT] = 'DiagnosticHint',
         }
-    }
+    },
+    severity_sort = true
 })
