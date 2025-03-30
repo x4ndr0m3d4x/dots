@@ -6,10 +6,6 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 
---- STATUSCOLUMN ---
-vim.o.numberwidth = 4                           -- Force the statuscolumn to always be 4 chars wide
-vim.o.statuscolumn = "%!v:lua.MyStatusColumn()" -- Use a custom statuscolumn function
-
 --- LEADER ---
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
