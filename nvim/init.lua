@@ -1,4 +1,5 @@
 require("options")
+require("colors")
 require("lazy_nvim")
 require("keymaps")
 require("lsp")
