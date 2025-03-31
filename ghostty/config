@@ -1,0 +1,10 @@
+clipboard-read = allow
+clipboard-write = allow
+theme = catppuccin-mocha
+font-size = 14
+font-family = FiraCode Nerd Font Mono
+gtk-titlebar = false
+adjust-underline-position = 2
+adjust-strikethrough-position = -4
+cursor-color = #E0E2EB
+cursor-text = #272120
