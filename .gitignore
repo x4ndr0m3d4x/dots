@@ -9,6 +9,8 @@
 !eww/**/*
 !quickshell
 !quickshell/**/*
+!ghostty
+!ghostty/**/*
 
 # But add lazy-lock.json
 nvim/lazy-lock.json
