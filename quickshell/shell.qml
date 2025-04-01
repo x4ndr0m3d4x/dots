@@ -7,7 +7,7 @@ ShellRoot {
     id: root
 
     Variants {
-        model: Quickshell.screens;
+        model: Quickshell.screens
 
         PanelWindow {
             property var modelData
@@ -16,18 +16,18 @@ ShellRoot {
             anchors {
                 top: true
                 left: true
-                right: true
+                bottom: true
             }
 
-            height: 30
+            width: 50
 
-            RowLayout {
+            ColumnLayout {
                 anchors.fill: parent
                 spacing: 0
 
-                RowLayout {
+                ColumnLayout {
                     Layout.alignment: Qt.AlignLeft
-                    RowLayout {
+                    ColumnLayout {
                         spacing: 0
                         Layout.fillWidth: true
                         Layout.fillHeight: true
@@ -43,13 +43,12 @@ ShellRoot {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                         }
-                    } 
-
+                    }
                 }
 
-                RowLayout {
+                ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    RowLayout {
+                    ColumnLayout {
                         spacing: 0
                         Layout.fillWidth: true
                         Layout.fillHeight: true
@@ -68,21 +67,27 @@ ShellRoot {
                     }
                 }
 
-                RowLayout {
+                ColumnLayout {
                     Layout.alignment: Qt.AlignRight
-                    RowLayout {
+                    ColumnLayout {
                         spacing: 4
                         Layout.fillWidth: true
                         Layout.fillHeight: true
 
                         Text {
-                            id: date 
-                            text: DateTime.date 
+                            id: date
+                            text: DateTime.date
                         }
 
                         Text {
-                            id: time
-                            text: DateTime.time
+                            id: hours
+                            text: DateTime.hours
+                            font.pointSize: 16
+                        }
+
+                        Text {
+                            id: minutes
+                            text: DateTime.minutes
                             font.pointSize: 16
                         }
 
