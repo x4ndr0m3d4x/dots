@@ -35,20 +35,6 @@ return {
                     columns = { { "kind_icon" }, { "label" }, { "kind" } }
                 }
             }
-        },
-        sources = {
-            default = { "lsp", "path", "snippets", "buffer", "dictionary" },
-            providers = {
-                dictionary = {
-                    module = "blink-cmp-dictionary",
-                    name = "Dict",
-                    min_keyword_length = 3,
-                    opts = {
-                        dictionary_directories = { vim.fn.expand("~/.config/nvim/dictionary") }
-                    }
-                }
-            }
         }
-    },
-    opts_extend = { "sources.default" }
+    }
 }
