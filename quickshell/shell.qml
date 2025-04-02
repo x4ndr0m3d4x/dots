@@ -1,7 +1,10 @@
 import Quickshell
 import Quickshell.Io
+import Quickshell.Hyprland
+import Quickshell.Services.Mpris
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 
 ShellRoot {
     id: root
@@ -13,90 +16,104 @@ ShellRoot {
             property var modelData
             screen: modelData
 
+            // Panel anchored to the top
             anchors {
                 top: true
                 left: true
-                bottom: true
+                right: true
             }
 
-            width: 50
+            height: 35
+            color: "#282a36"
 
-            ColumnLayout {
+            // Main vertical layout for the panel
+            RowLayout {
                 anchors.fill: parent
-                spacing: 0
 
-                ColumnLayout {
-                    Layout.alignment: Qt.AlignLeft
-                    ColumnLayout {
-                        spacing: 0
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
+                /// --- Left Sections: Trans Rights, Workspaces, Media Player
+                RowLayout {
+                    Layout.fillHeight: true
+                    spacing: 8
 
-                        Rectangle {
-                            color: "blue"
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                        }
+                    Text {
+                        id: transRights
+                        text: "🏳️‍⚧️🏳️‍🌈"
+                        font.pointSize: 18
+                    }
 
-                        Rectangle {
-                            color: "lightblue"
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                        }
+                    Text {
+                        id: hyprland
+                        text: Hyprland.focusedMonitor.activeWorkspace.id || "Unknown Workspace"
+                        color: "white"
+                        font.pointSize: 18
+                    }
+
+                    Text {
+                        id: mediaTitle
+                        text: Mpris.players.values[0].trackTitle || "Unknown Track"
+                        color: "white"
+                        font.pointSize: 18
                     }
                 }
 
-                ColumnLayout {
-                    Layout.alignment: Qt.AlignHCenter
-                    ColumnLayout {
-                        spacing: 0
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-
-                        Rectangle {
-                            color: "orange"
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                        }
-
-                        Rectangle {
-                            color: "red"
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                        }
-                    }
+                // --- Middle Section: Active Window ---
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    spacing: 10
                 }
 
-                ColumnLayout {
-                    Layout.alignment: Qt.AlignRight
-                    ColumnLayout {
-                        spacing: 4
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
+                // --- Right Section: Date, Time & Power ---
+                RowLayout {
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                    Layout.fillHeight: true
+                    spacing: 8
 
-                        Text {
-                            id: date
-                            text: DateTime.date
+                    Clock {}
+
+                    Button {
+                        id: powerButton
+                        text: "⏻"
+                        Layout.alignment: Qt.AlignHCenter
+
+                        background: Rectangle {
+                            color: powerButton.down ? "#ff5555" : "transparent"
+                            border.color: "#bd93f9"
+                            radius: 5
+                        }
+                        contentItem: Text {
+                            text: powerButton.text
+                            font: powerButton.font
+                            color: "#ff5555" // Dracula theme red (example)
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
                         }
 
-                        Text {
-                            id: hours
-                            text: DateTime.hours
-                            font.pointSize: 16
-                        }
+                        // Action when clicked
+                        onClicked: {
+                            console.log("Power button clicked. Executing command...");
+                            var proc = Quickshell.Io.Process.create();
+                            // --- Choose ONE command that works for your system ---
+                            // Option 1: Use a graphical logout menu like wlogout
+                            // proc.exec("wlogout");
 
-                        Text {
-                            id: minutes
-                            text: DateTime.minutes
-                            font.pointSize: 16
-                        }
+                            // Option 2: Terminate the current session via logind
+                            // proc.exec("loginctl terminate-session $XDG_SESSION_ID");
 
-                        Rectangle {
-                            id: power
+                            // Option 3: Initiate system poweroff (may require root privileges)
+                            // proc.exec("systemctl poweroff");
 
-                            color: "lightgreen"
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
+                            // Option 4 (Placeholder): Just log a message
+                            proc.exec("echo 'Logout command placeholder'");
+
+                            proc.finished.connect(function () {
+                                if (proc.exitCode !== 0) {
+                                    console.error("Power command failed:", proc.stderr);
+                                } else {
+                                    console.log("Power command executed successfully.");
+                                }
+                                proc.destroy(); // Clean up the process object
+                            });
                         }
                     }
                 }
