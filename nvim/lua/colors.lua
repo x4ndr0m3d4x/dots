@@ -1,15 +1,20 @@
 local colors = {
-    -- PATCH_OPEN
     Normal = { fg = "#E0E2EB", bg = "#272120" },
+    Bold = { bold = true },
     Boolean = { fg = "#F28F0D" },
+    Breakpoint = { fg = "#FF4D4D", bg = "#1F1A19" },
+    BreakpointCurrent = { fg = "#FF4D4D", bg = "#514543" },
     Character = { fg = "#FCAC8D" },
     ColorColumn = { bg = "#2B1717" },
     Comment = { fg = "#656A81" },
     Constant = { fg = "#F28F0D" },
     Cursor = { reverse = true },
-    CursorColumn = { bg = "#3B3230" },
+    CursorBorder = { fg = "#E0E2EB", bg = "#241F1E" },
+    CursorColumn = { bg = "#1F1A19" },
     CursorLine = { bg = "#3B3230" },
     CursorLineNr = { bg = "#514543" },
+    DapStopped = { fg = "#FF4D4D", bg = "#1F1A19" },
+    DapStoppedCurrent = { fg = "#FF4D4D", bg = "#514543" },
     Delimiter = { fg = "#B9BDD0" },
     DiagnosticError = { fg = "#FF4D4D" },
     DiagnosticFloatingError = { fg = "#FF4D4D" },
@@ -36,7 +41,7 @@ local colors = {
     Float = { fg = "#F28F0D" },
     Function = { fg = "#33AAFF" },
     Identifier = { fg = "#99CFFF" },
-    LineNr = { fg = "#B1A3A0", bg = "#272120" },
+    LineNr = { fg = "#B1A3A0" },
     LspInlayHint = { fg = "#B2B4BD", bg = "#3B3230" },
     LspSignatureActiveParameter = { fg = "#E0E2EB", bg = "#524D4C" },
     NormalFloat = { fg = "#E0E2EB", bg = "#272120" },
@@ -81,14 +86,12 @@ local colors = {
     ["@tag"] = { fg = "#FF61B5" },
     ["@tag.attribute"] = { fg = "#99D5FF" },
     ["@tag.delimiter"] = { fg = "#99CFFF" },
-    -- PATCH_CLOSE
 }
 
 vim.cmd("highlight clear")
 vim.cmd("set t_Co=256")
 vim.cmd("let g:colors_name='my_theme'")
 
--- Apply highlight groups
 for group, attrs in pairs(colors) do
     vim.api.nvim_set_hl(0, group, attrs)
 end
