@@ -10,6 +10,9 @@ vim.g.loaded_ruby_provider = 0
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+--- STATUSCOLUMN ---
+vim.o.statuscolumn = "%!v:lua.MyStatusColumn()"
+
 --- TAB ---
 vim.opt.tabstop = 4      -- A tab counts as 4 spaces
 vim.opt.shiftwidth = 4   -- How many spaces for each level of autoindent
