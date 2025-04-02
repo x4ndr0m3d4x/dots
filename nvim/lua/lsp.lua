@@ -32,5 +32,6 @@ vim.lsp.enable({
     "pyright",
     "tinymist",
     "harper-ls",
-    "r"
+    "r",
+    "qml"
 })
