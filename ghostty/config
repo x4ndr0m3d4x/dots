@@ -1,8 +1,8 @@
 clipboard-read = allow
 clipboard-write = allow
 theme = catppuccin-mocha
-font-size = 14
-font-family = FiraCode Nerd Font Mono
+font-size = 13
+font-family = "Maple Mono NF"
 gtk-titlebar = false
 adjust-underline-position = 2
 adjust-strikethrough-position = -4
