@@ -48,7 +48,6 @@ map("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation", nore
 map("n", "gR", vim.lsp.buf.references, { desc = "Go to references", noremap = true, silent = true })
 map("n", "ga", vim.lsp.buf.code_action, { desc = "Code action", noremap = true, silent = true })
 map("n", "gr", vim.lsp.buf.rename, { desc = "Rename Symbol", noremap = true, silent = true })
-map("n", "<leader>sh", vim.lsp.buf.signature_help, { desc = "Show signature help", noremap = true, silent = true })
 
 --- DEBUG ---
 map("n", "<leader>ds", require("dap").continue, { desc = "Start debugging", noremap = true, silent = true })
