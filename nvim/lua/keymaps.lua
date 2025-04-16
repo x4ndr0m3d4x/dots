@@ -40,6 +40,8 @@ map("n", "<leader>o", function() Snacks.picker.buffers({ focus = "list" }) end,
     { desc = "Browse open buffers", noremap = true, silent = true })
 map("n", "<leader>g", function() Snacks.picker.grep({ focus = "list" }) end,
     { desc = "Grep", noremap = true, silent = true })
+map("n", "<leader>f", function() Snacks.picker.files({ focus = "list" }) end,
+    { desc = "Files Picker", noremap = true, silent = true })
 
 --- LSP ---
 map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration", noremap = true, silent = true })
