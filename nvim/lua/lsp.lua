@@ -16,6 +16,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- Enable the LSP
         vim.lsp.completion.enable(true, ev.data.client_id, ev.buf)
+        -- Refresh code lens
+        vim.lsp.codelens.refresh()
     end,
 })
 
