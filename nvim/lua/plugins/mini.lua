@@ -32,7 +32,6 @@ return {
         require("mini.ai").setup()       -- Selection around/inside
         require("mini.move").setup()     -- Move line and selection
         require("mini.surround").setup() -- Surround textobjects
-        require("mini.notify").setup()   -- Notifications
         require("mini.jump2d").setup()   -- Jump to any visible position using 2 chars
     end
 }
