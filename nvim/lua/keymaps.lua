@@ -27,6 +27,7 @@ local map = vim.keymap.set
 --- QOL ---
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "De-highlight search results", noremap = true, silent = true })
 map("n", "L", show_line_virtual_diagnostics, { desc = "Show virtual line diagnotics", noremap = true, silent = true })
+map({ "n", "i" }, "<D-space>", "<Nop>", { noremap = true, silent = true })
 
 --- WINDOW NAVIGATION ---
 map("n", "<C-h>", "<C-w>h", { desc = "Cursor to window left", noremap = true, silent = true })
