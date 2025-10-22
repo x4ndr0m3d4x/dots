@@ -36,7 +36,8 @@ vim.opt.clipboard = "unnamedplus" -- Use system clipboard for yank/paste
 vim.opt.colorcolumn = "80"        -- A highlighted column at 80 chars
 
 --- LINE NUMBER ---
-vim.opt.number = true -- Show the line numbers in front of each line
+vim.opt.number = true         -- Show the line numbers in front of each line
+vim.opt.relativenumber = true -- Shows the relative line numbers in front of each line
 
 --- DIAGNOSTICS ---
 vim.diagnostic.config({

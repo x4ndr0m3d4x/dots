@@ -25,8 +25,12 @@ _G.MyStatusColumn = function()
 
     local content = ""
 
+    -- Calculate relative line number
+    local current_line = vim.fn.line('.')
+    local relnum = vim.v.relnum -- Relative line number (0 for current line)
+
     if has_stopped then
-        if lnum == vim.fn.line('.') then
+        if lnum == current_line then
             content = content .. "%#DapStoppedCurrent#"
         else
             content = content .. "%#DapStopped#" -- Debugger stopped on current line has priority
@@ -34,7 +38,7 @@ _G.MyStatusColumn = function()
 
         content = content .. "→   " -- Debugger stopped on current line has priority
     elseif has_breakpoint then
-        if lnum == vim.fn.line('.') then
+        if lnum == current_line then
             content = content .. "%#BreakpointCurrent#"
         else
             content = content .. "%#Breakpoint#"
@@ -42,11 +46,19 @@ _G.MyStatusColumn = function()
 
         content = content .. "●   "
     else
-        if lnum == vim.fn.line('.') then
+        if lnum == current_line then
             content = "%#Bold#" .. string.format("%-4s", tostring(lnum))
         else
             content = "%#CursorColumn#" .. string.format("%4s", tostring(lnum))
         end
+    end
+
+    -- Add relative line number with padding and gap
+    content = content .. " " -- One column gap
+    if relnum == 0 then
+        content = content .. "%#Bold#" .. string.format("%-4s", tostring(lnum))
+    else
+        content = content .. "%#CursorColumn#" .. string.format("%4s", tostring(relnum))
     end
 
     return content .. "%#CursorBorder#│"
