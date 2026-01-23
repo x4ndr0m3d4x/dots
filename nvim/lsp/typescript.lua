@@ -1,4 +1,4 @@
--- npm install -g typescript typescript-language-server
+-- npm i -g typescript typescript-language-server
 ---@type vim.lsp.Config
 return {
     cmd = { "typescript-language-server", "--stdio" },

@@ -22,6 +22,12 @@ vim.opt.expandtab = true -- When pressing <Tab> in insert mode, insert the appro
 vim.opt.cmdheight = 0  -- Effectively hide the cmd line (replaces statusline while in command mode)
 vim.opt.laststatus = 3 -- Always show a status line, but only in the last window
 
+--- FOLDING ---
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.opt.foldlevel = 50
+vim.opt.foldlevelstart = 50
+
 --- CURSOR ---
 vim.opt.scrolloff = 5     -- How many lines (at least) to keep above or below the cursor
 vim.opt.sidescrolloff = 5 -- How many columns (at least) to keep to the left or to the right of the cursor
@@ -53,8 +59,8 @@ vim.diagnostic.config({
             [vim.diagnostic.severity.INFO] = "",
         },
         numhl = {
-            [vim.diagnostic.severity.WARN] = 'WarningMsg',
-            [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
+            [vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
+            [vim.diagnostic.severity.ERROR] = 'DiagnosticError',
             [vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
             [vim.diagnostic.severity.HINT] = 'DiagnosticHint',
         }

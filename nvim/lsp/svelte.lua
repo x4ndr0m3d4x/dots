@@ -1,4 +1,4 @@
--- npm install -g svelte-language-server
+-- npm i -g svelte-language-server
 ---@type vim.lsp.Config
 return {
     cmd = { "svelteserver", "--stdio" },

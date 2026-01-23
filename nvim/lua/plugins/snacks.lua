@@ -1,8 +1,7 @@
-return {
-    "folke/snacks.nvim",
-    priority = 1000,
-    opts = {
-        picker = {}, -- Telescope alternative
-        input = {}  -- Prettier input field
-    }
-}
+vim.pack.add({ "https://github.com/folke/snacks.nvim" })
+
+local snacks = require('snacks')
+snacks.setup({
+    picker = { enabled = true },
+    gh = { enabled = true }
+})

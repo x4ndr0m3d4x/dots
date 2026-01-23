@@ -1,4 +1,5 @@
 -- sudo pacman -Sy tinymist
+-- brew install tinymist
 ---@type vim.lsp.Config
 return {
     cmd = { "tinymist" },

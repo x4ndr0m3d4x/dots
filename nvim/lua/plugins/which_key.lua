@@ -1,17 +1,7 @@
-return {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    opts = {
-        preset = "helix", -- Display a small window in the lower right corner
-        delay = 500       -- 0.5s second delay
-    },
-    keys = {
-        {
-            "<leader>?",
-            function()
-                require("which-key").show({ global = false })
-            end,
-            desc = "Buffer Local Keymaps (which-key)",
-        },
-    },
-}
+vim.pack.add({ "https://github.com/folke/which-key.nvim" })
+
+local which_key = require('which-key')
+which_key.setup({
+    preset = "helix",
+    delay = 500
+})

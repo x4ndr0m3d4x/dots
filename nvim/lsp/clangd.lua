@@ -1,4 +1,5 @@
 -- sudo pacman -Sy llvm
+-- brew install llvm
 ---@type vim.lsp.Config
 return {
     cmd = { "clangd" },
