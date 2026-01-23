@@ -5,6 +5,7 @@ colorizer.setup({
     filetypes = { "html", "markdown", "css", "less", "postcss", "sass", "scss", "javascript", "typescript", "svelte" },
     user_default_options = {
         css = true,
+        names = false,
         mode = "background",
     }
 })
