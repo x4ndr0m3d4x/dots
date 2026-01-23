@@ -53,6 +53,10 @@
       "rev": "fe7cfe9800a182274d0f868a74b7263b8c0c020b",
       "src": "https://github.com/folke/snacks.nvim"
     },
+    "strudel.nvim": {
+      "rev": "a6b9752b0084a20c37786b54eef2095bb31daff7",
+      "src": "https://github.com/gruvw/strudel.nvim"
+    },
     "teide.nvim": {
       "rev": "95041d1d78e786bd88be64bca3e1771f7b6236df",
       "src": "https://github.com/serhez/teide.nvim"
