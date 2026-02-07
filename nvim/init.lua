@@ -27,10 +27,11 @@ vim.api.nvim_create_autocmd("UILeave", {
 
 -- Start Tree-sitter automatically
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "bash", "c_sharp", "cmake", "cpp", "css",
-        "html", "json", "python",
-        "rust", "scss", "sql", "svelte", "toml", "typescript", 
-        "typst" },
+    pattern = { "bash", "c", "c_sharp", "cmake", "cpp", "css",
+        "gdscript", "gdshader", "git_config", "git_rebase", "gitattributes",
+        "gitcommit", "gitignore", "html", "javascript", "json", "lua", "markdown",
+        "markdown_inline", "python", "rust", "scss", "sql", "svelte",
+        "toml", "typescript", "typst", "vimdoc" },
     callback = function()
         local ok, _ = pcall(vim.treesitter.start)
         if not ok then
