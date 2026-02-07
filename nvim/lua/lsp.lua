@@ -43,10 +43,12 @@ vim.lsp.enable({
     "clangd",
     "tailwindcss",
     "html",
+    "css",
+    "json",
     "typescript",
     "lua",
     "svelte",
-    "pyright",
+    "ty",
     "tinymist",
     "harper-ls",
     "ruff"

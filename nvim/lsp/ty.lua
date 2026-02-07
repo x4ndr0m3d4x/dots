@@ -1,15 +1,17 @@
--- npm i -g pyright
+-- paru -S ty
+-- brew install ty
 ---@type vim.lsp.Config
 return {
-    cmd = { "pyright-langserver", "--stdio" },
+    cmd = { "ty", "server" },
     filetypes = { "python" },
     root_markers = { ".git", "requirements.txt", "setup.py", "setup.cfg", "venv" },
     settings = {
         python = {
             analysis = {
-                autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
-                diagnosticMode = 'openFilesOnly'
+                diagnostics = true,
+                inlayHints = true,
+                smartCompletion = true,
+                checkOnType = false
             }
         }
     }
