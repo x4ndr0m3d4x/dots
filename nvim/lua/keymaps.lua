@@ -17,7 +17,7 @@ map("n", "<C-l>", "<C-w>l", { desc = "Cursor to window right", noremap = true, s
 map("n", "<C-n>", function() MiniFiles.open() end, { desc = "Open file explorer", noremap = true, silent = true })
 map("n", "<leader>o", function() Snacks.picker.buffers({ focus = "list" }) end,
     { desc = "Browse open buffers", noremap = true, silent = true })
-map("n", "<leader>g", function() Snacks.picker.grep({ focus = "list" }) end,
+map("n", "<leader>gr", function() Snacks.picker.grep({ focus = "list" }) end,
     { desc = "Grep", noremap = true, silent = true })
 map("n", "<leader>f", function() Snacks.picker.files({ focus = "list" }) end,
     { desc = "Files Picker", noremap = true, silent = true })

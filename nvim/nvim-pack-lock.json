@@ -1,9 +1,5 @@
 {
   "plugins": {
-    "ale": {
-      "rev": "b5f8cb296ae2679f5acb2c927e116763efccaab3",
-      "src": "https://github.com/dense-analysis/ale"
-    },
     "bento.nvim": {
       "rev": "e7faad6469f4bf70bc7cca8cba7e154ece9c697d",
       "src": "https://github.com/serhez/bento.nvim"
