@@ -1,10 +1,13 @@
 clipboard-read = allow
 clipboard-write = allow
 theme = "Catppuccin Mocha"
-font-size = 13
-font-family = "Maple Mono NF"
+font-size = 12
+font-family = "JetBrains Mono Nerd Font"
 gtk-titlebar = false
-adjust-underline-position = 2
-adjust-strikethrough-position = -4
 cursor-color = #E0E2EB
 cursor-text = #272120
+background-opacity = 1
+shell-integration = fish
+command = fish
+window-padding-x = 25
+window-padding-y = 25
