@@ -1,4 +1,4 @@
--- sudo pacman -Sy llvm
+-- sudo pacman -Sy clang
 -- brew install llvm
 ---@type vim.lsp.Config
 return {
