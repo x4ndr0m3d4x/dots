@@ -8,6 +8,5 @@ cursor-color = #E0E2EB
 cursor-text = #272120
 background-opacity = 0.78
 shell-integration = fish
-command = fish
 window-padding-x = 25
 window-padding-y = 25
