@@ -22,6 +22,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- Helper function to sort Tailwind CSS classes using code action
+-- Timeout for LSP request (1s chosen to balance responsiveness with LSP response time)
+local TAILWIND_SORT_TIMEOUT_MS = 1000
+
 local function sort_tailwind_classes(bufnr)
     local line_count = vim.api.nvim_buf_line_count(bufnr)
     local last_line = vim.api.nvim_buf_get_lines(bufnr, line_count - 1, line_count, false)[1]
@@ -41,9 +44,7 @@ local function sort_tailwind_classes(bufnr)
     
     -- Use synchronous request with 1s timeout to ensure sorting completes before save
     -- This may briefly block the UI, but ensures classes are sorted before writing to disk
-    -- 1s timeout chosen to balance responsiveness with allowing time for LSP to respond
-    local timeout_ms = 1000
-    local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, timeout_ms)
+    local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, TAILWIND_SORT_TIMEOUT_MS)
     if not result or vim.tbl_isempty(result) then
         return
     end
@@ -64,7 +65,12 @@ local function sort_tailwind_classes(bufnr)
                 end
                 -- Execute command if present (send to the specific client that provided it)
                 if action.command then
-                    client.request('workspace/executeCommand', action.command, function() end, bufnr)
+                    local cmd = action.command
+                    local cmd_params = {
+                        command = cmd.command,
+                        arguments = cmd.arguments,
+                    }
+                    client.request('workspace/executeCommand', cmd_params, function() end, bufnr)
                 end
             end
             
