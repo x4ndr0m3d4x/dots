@@ -83,8 +83,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
         
         -- Hook into BufWritePre to sort Tailwind classes before save
+        -- Create a buffer-local augroup to ensure no duplicates
+        local augroup = vim.api.nvim_create_augroup('lsp_tailwindcss_sort_buf_' .. args.buf, { clear = true })
         vim.api.nvim_create_autocmd("BufWritePre", {
-            group = vim.api.nvim_create_augroup('lsp_tailwindcss_sort_on_save', { clear = false }),
+            group = augroup,
             buffer = args.buf,
             callback = function()
                 sort_tailwind_classes(args.buf)
