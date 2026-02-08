@@ -21,6 +21,48 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
+-- Helper function to sort Tailwind CSS classes using code action
+local function sort_tailwind_classes(bufnr, client_id)
+    local params = {
+        textDocument = vim.lsp.util.make_text_document_params(bufnr),
+        range = {
+            start = { line = 0, character = 0 },
+            ['end'] = { line = vim.api.nvim_buf_line_count(bufnr), character = 0 }
+        },
+        context = {
+            diagnostics = {},
+            only = { "source.sortTailwindClasses" }
+        }
+    }
+    
+    local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, 1000)
+    if not result or vim.tbl_isempty(result) then
+        return
+    end
+    
+    for client_id_result, response in pairs(result) do
+        if response.result then
+            for _, action in pairs(response.result) do
+                -- Apply workspace edit if present
+                if action.edit then
+                    local client = vim.lsp.get_client_by_id(client_id_result)
+                    if client then
+                        vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
+                    end
+                end
+                -- Execute command if present
+                if action.command then
+                    local command = action.command
+                    local fn = vim.lsp.commands[command.command] or vim.lsp.buf.execute_command
+                    if type(fn) == "function" then
+                        fn(command)
+                    end
+                end
+            end
+        end
+    end
+end
+
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
     callback = function(args)
@@ -34,6 +76,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
     end,
     desc = 'LSP: Disable hover capability from Ruff',
+})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup('lsp_attach_tailwindcss_sort', { clear = true }),
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client == nil or client.name ~= 'tailwindcss' then
+            return
+        end
+        
+        -- Hook into BufWritePre to sort Tailwind classes before save
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = args.buf,
+            callback = function()
+                sort_tailwind_classes(args.buf, args.data.client_id)
+            end,
+            desc = 'Sort Tailwind CSS classes on save'
+        })
+    end,
+    desc = 'LSP: Setup Tailwind CSS class sorting on save',
 })
 
 vim.lsp.config('*', { root_markers = { '.git' } })
