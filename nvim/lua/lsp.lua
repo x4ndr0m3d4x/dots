@@ -39,6 +39,8 @@ local function sort_tailwind_classes(bufnr)
         }
     }
     
+    -- Use synchronous request with 1s timeout to ensure sorting completes before save
+    -- This may briefly block the UI, but ensures classes are sorted before writing to disk
     local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, 1000)
     if not result or vim.tbl_isempty(result) then
         return
@@ -59,6 +61,8 @@ local function sort_tailwind_classes(bufnr)
                     vim.lsp.buf.execute_command(action.command)
                 end
             end
+            -- Break after processing first successful response
+            break
         end
     end
 end
