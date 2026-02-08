@@ -42,31 +42,33 @@ local function sort_tailwind_classes(bufnr)
     -- Use synchronous request with 1s timeout to ensure sorting completes before save
     -- This may briefly block the UI, but ensures classes are sorted before writing to disk
     -- 1s timeout chosen to balance responsiveness with allowing time for LSP to respond
-    local SORT_TIMEOUT_MS = 1000
-    local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, SORT_TIMEOUT_MS)
+    local timeout_ms = 1000
+    local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, timeout_ms)
     if not result or vim.tbl_isempty(result) then
         return
     end
     
-    -- Process responses from LSP clients (typically only tailwindcss will respond)
-    -- We use pairs() since client_id is the key, then break after first successful response
+    -- Process responses from LSP clients
+    -- Only tailwindcss should respond to "source.sortTailwindClasses" action
     for client_id, response in pairs(result) do
-        if response.result then
+        if response.result and not vim.tbl_isempty(response.result) then
+            local client = vim.lsp.get_client_by_id(client_id)
+            if not client then
+                goto continue
+            end
+            
             for _, action in pairs(response.result) do
                 -- Apply workspace edit if present
                 if action.edit then
-                    local client = vim.lsp.get_client_by_id(client_id)
-                    if client then
-                        vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
-                    end
+                    vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
                 end
-                -- Execute command if present
+                -- Execute command if present (send to the specific client that provided it)
                 if action.command then
-                    vim.lsp.buf.execute_command(action.command)
+                    client.request('workspace/executeCommand', action.command, nil, bufnr)
                 end
             end
-            -- Break after processing first successful response
-            break
+            
+            ::continue::
         end
     end
 end
