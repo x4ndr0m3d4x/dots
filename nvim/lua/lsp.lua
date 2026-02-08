@@ -23,11 +23,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 -- Helper function to sort Tailwind CSS classes using code action
 local function sort_tailwind_classes(bufnr)
+    local line_count = vim.api.nvim_buf_line_count(bufnr)
+    local last_line = vim.api.nvim_buf_get_lines(bufnr, line_count - 1, line_count, false)[1]
+    local last_line_len = last_line and #last_line or 0
+    
     local params = {
         textDocument = vim.lsp.util.make_text_document_params(bufnr),
         range = {
             start = { line = 0, character = 0 },
-            ['end'] = { line = vim.api.nvim_buf_line_count(bufnr) - 1, character = 0 }
+            ['end'] = { line = line_count - 1, character = last_line_len }
         },
         context = {
             diagnostics = {},
