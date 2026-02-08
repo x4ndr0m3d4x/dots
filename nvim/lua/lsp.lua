@@ -27,7 +27,7 @@ local function sort_tailwind_classes(bufnr)
         textDocument = vim.lsp.util.make_text_document_params(bufnr),
         range = {
             start = { line = 0, character = 0 },
-            ['end'] = { line = vim.api.nvim_buf_line_count(bufnr), character = 0 }
+            ['end'] = { line = vim.api.nvim_buf_line_count(bufnr) - 1, character = 0 }
         },
         context = {
             diagnostics = {},
@@ -84,7 +84,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         
         -- Hook into BufWritePre to sort Tailwind classes before save
         vim.api.nvim_create_autocmd("BufWritePre", {
-            group = vim.api.nvim_create_augroup('lsp_tailwindcss_sort_on_save_' .. args.buf, { clear = true }),
+            group = vim.api.nvim_create_augroup('lsp_tailwindcss_sort_on_save', { clear = false }),
             buffer = args.buf,
             callback = function()
                 sort_tailwind_classes(args.buf)
