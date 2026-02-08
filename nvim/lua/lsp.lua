@@ -21,61 +21,80 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
--- Helper function to sort Tailwind CSS classes using code action
+-- Helper function to sort Tailwind CSS classes using custom LSP method
 -- Timeout for LSP request (1s chosen to balance responsiveness with LSP response time)
 local TAILWIND_SORT_TIMEOUT_MS = 1000
 
-local function sort_tailwind_classes(bufnr)
-    local line_count = vim.api.nvim_buf_line_count(bufnr)
-    local last_line = vim.api.nvim_buf_get_lines(bufnr, line_count - 1, line_count, false)[1]
-    local last_line_len = last_line and #last_line or 0
-    
-    local params = {
-        textDocument = vim.lsp.util.make_text_document_params(bufnr),
-        range = {
-            start = { line = 0, character = 0 },
-            ['end'] = { line = line_count - 1, character = last_line_len }
-        },
-        context = {
-            diagnostics = {},
-            only = { "source.sortTailwindClasses" }
-        }
-    }
-    
-    -- Use synchronous request with 1s timeout to ensure sorting completes before save
-    -- This may briefly block the UI, but ensures classes are sorted before writing to disk
-    local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, TAILWIND_SORT_TIMEOUT_MS)
-    if not result or vim.tbl_isempty(result) then
+local function sort_tailwind_classes(bufnr, client_id)
+    local client = vim.lsp.get_client_by_id(client_id)
+    if not client then
         return
     end
     
-    -- Process responses from LSP clients
-    -- Only tailwindcss should respond to "source.sortTailwindClasses" action
-    for client_id, response in pairs(result) do
-        if response.result and not vim.tbl_isempty(response.result) then
-            local client = vim.lsp.get_client_by_id(client_id)
-            if not client then
-                goto continue
+    -- Get all lines in the buffer
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    
+    -- Pattern to match class attributes (class="..." or className="...")
+    -- Matches: class="...", class='...', className="...", className='...'
+    local class_pattern = '(class[Nn]ame?)%s*=%s*(["\'])([^"\']*)["\']'
+    
+    -- Store all class attribute locations and their sorted versions
+    local edits = {}
+    
+    for line_num, line in ipairs(lines) do
+        local line_idx = line_num - 1  -- 0-indexed for LSP
+        local search_pos = 1
+        
+        while true do
+            local attr_start, attr_end, attr_name, quote, class_string = string.find(line, class_pattern, search_pos)
+            if not attr_start then
+                break
             end
             
-            for _, action in pairs(response.result) do
-                -- Apply workspace edit if present
-                if action.edit then
-                    vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
-                end
-                -- Execute command if present (send to the specific client that provided it)
-                if action.command then
-                    local cmd = action.command
-                    local cmd_params = {
-                        command = cmd.command,
-                        arguments = cmd.arguments,
-                    }
-                    client.request('workspace/executeCommand', cmd_params, function() end, bufnr)
+            -- Calculate the exact position of the class string content (between quotes)
+            local class_start = attr_end - #class_string  -- Character position where class content starts
+            
+            -- Create range for the class string content only
+            local range = {
+                start = { line = line_idx, character = class_start - 1 },
+                ['end'] = { line = line_idx, character = attr_end - 1 }
+            }
+            
+            -- Request sorting for this specific class string
+            local params = {
+                textDocument = vim.lsp.util.make_text_document_params(bufnr),
+                classLists = { class_string },
+            }
+            
+            local result = client.request_sync('@/tailwindCSS/sortSelection', params, TAILWIND_SORT_TIMEOUT_MS, bufnr)
+            
+            if result and result.result and result.result.classLists and result.result.classLists[1] then
+                local sorted_classes = result.result.classLists[1]
+                
+                -- Only add edit if classes were actually sorted differently
+                if sorted_classes ~= class_string then
+                    table.insert(edits, {
+                        range = range,
+                        newText = sorted_classes
+                    })
                 end
             end
             
-            ::continue::
+            -- Move search position forward
+            search_pos = attr_end + 1
         end
+    end
+    
+    -- Apply all edits in reverse order (bottom to top) to avoid position shifts
+    table.sort(edits, function(a, b)
+        if a.range.start.line == b.range.start.line then
+            return a.range.start.character > b.range.start.character
+        end
+        return a.range.start.line > b.range.start.line
+    end)
+    
+    for _, edit in ipairs(edits) do
+        vim.lsp.util.apply_text_edits({ edit }, bufnr, client.offset_encoding)
     end
 end
 
@@ -109,7 +128,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
             group = augroup,
             buffer = args.buf,
             callback = function()
-                sort_tailwind_classes(args.buf)
+                sort_tailwind_classes(args.buf, args.data.client_id)
             end,
             desc = 'Sort Tailwind CSS classes on save'
         })
