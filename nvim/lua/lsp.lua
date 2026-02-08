@@ -40,23 +40,19 @@ local function sort_tailwind_classes(bufnr)
         return
     end
     
-    for client_id_result, response in pairs(result) do
+    for client_id, response in pairs(result) do
         if response.result then
             for _, action in pairs(response.result) do
                 -- Apply workspace edit if present
                 if action.edit then
-                    local client = vim.lsp.get_client_by_id(client_id_result)
+                    local client = vim.lsp.get_client_by_id(client_id)
                     if client then
                         vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
                     end
                 end
                 -- Execute command if present
                 if action.command then
-                    local command = action.command
-                    local fn = vim.lsp.commands[command.command] or vim.lsp.buf.execute_command
-                    if type(fn) == "function" then
-                        fn(command)
-                    end
+                    vim.lsp.buf.execute_command(action.command)
                 end
             end
         end
