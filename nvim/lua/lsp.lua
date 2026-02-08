@@ -41,11 +41,15 @@ local function sort_tailwind_classes(bufnr)
     
     -- Use synchronous request with 1s timeout to ensure sorting completes before save
     -- This may briefly block the UI, but ensures classes are sorted before writing to disk
-    local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, 1000)
+    -- 1s timeout chosen to balance responsiveness with allowing time for LSP to respond
+    local SORT_TIMEOUT_MS = 1000
+    local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, SORT_TIMEOUT_MS)
     if not result or vim.tbl_isempty(result) then
         return
     end
     
+    -- Process responses from LSP clients (typically only tailwindcss will respond)
+    -- We use pairs() since client_id is the key, then break after first successful response
     for client_id, response in pairs(result) do
         if response.result then
             for _, action in pairs(response.result) do
