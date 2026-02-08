@@ -64,7 +64,7 @@ local function sort_tailwind_classes(bufnr)
                 end
                 -- Execute command if present (send to the specific client that provided it)
                 if action.command then
-                    client.request('workspace/executeCommand', action.command, nil, bufnr)
+                    client.request('workspace/executeCommand', action.command, function() end, bufnr)
                 end
             end
             
