@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- Helper function to sort Tailwind CSS classes using code action
-local function sort_tailwind_classes(bufnr, client_id)
+local function sort_tailwind_classes(bufnr)
     local params = {
         textDocument = vim.lsp.util.make_text_document_params(bufnr),
         range = {
@@ -88,9 +88,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
         
         -- Hook into BufWritePre to sort Tailwind classes before save
         vim.api.nvim_create_autocmd("BufWritePre", {
+            group = vim.api.nvim_create_augroup('lsp_tailwindcss_sort_on_save_' .. args.buf, { clear = true }),
             buffer = args.buf,
             callback = function()
-                sort_tailwind_classes(args.buf, args.data.client_id)
+                sort_tailwind_classes(args.buf)
             end,
             desc = 'Sort Tailwind CSS classes on save'
         })
