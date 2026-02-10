@@ -3,7 +3,8 @@ vim.pack.add({ 'https://github.com/mfussenegger/nvim-lint' })
 local lint = require('lint')
 
 lint.linters_by_ft = {
-    markdown = { 'vale' }
+    markdown = { 'vale' },
+    typst = { 'vale' }
 }
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {

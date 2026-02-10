@@ -89,6 +89,10 @@
       "rev": "6e1365cfed7d09713129d617ece4fa01287e627b",
       "src": "https://github.com/gisketch/triforce.nvim"
     },
+    "typst-preview.nvim": {
+      "rev": "bf5d5eaf23bbfcca9f98a24ed29bd084abf89bf2",
+      "src": "https://github.com/chomosuke/typst-preview.nvim"
+    },
     "vim-wakatime": {
       "rev": "d7973b157a632d1edeff01818f18d67e584eeaff",
       "src": "https://github.com/wakatime/vim-wakatime"
