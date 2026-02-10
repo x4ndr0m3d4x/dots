@@ -6,7 +6,6 @@ font-family = "JetBrains Mono Nerd Font"
 gtk-titlebar = false
 cursor-color = #E0E2EB
 cursor-text = #272120
-background-opacity = 0.78
 shell-integration = fish
 window-padding-x = 25
 window-padding-y = 25
