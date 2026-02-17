@@ -1,11 +1,51 @@
-clipboard-read = allow
-clipboard-write = allow
-theme = "Catppuccin Mocha"
+# Font Configuration
 font-size = 12
-font-family = "JetBrains Mono Nerd Font"
-gtk-titlebar = false
-cursor-color = #E0E2EB
-cursor-text = #272120
-shell-integration = fish
+
+# Window Configuration
+window-decoration = false
 window-padding-x = 25
 window-padding-y = 25
+background-opacity = 1.0
+background-blur-radius = 32
+
+# Cursor Configuration
+cursor-style = block
+cursor-style-blink = true
+
+# Scrollback
+scrollback-limit = 3023
+
+# Terminal features
+mouse-hide-while-typing = true
+copy-on-select = false
+confirm-close-surface = false
+
+# Disable annoying copied to clipboard
+app-notifications = no-clipboard-copy,no-config-reload
+
+# Key bindings for common actions
+keybind = ctrl+shift+c=copy_to_clipboard
+keybind = ctrl+shift+v=paste_from_clipboard
+keybind = ctrl+shift+n=new_window
+keybind = ctrl+t=new_tab
+keybind = ctrl+plus=increase_font_size:1
+keybind = ctrl+minus=decrease_font_size:1
+keybind = ctrl+zero=reset_font_size
+
+# Material 3 UI elements
+unfocused-split-opacity = 0.7
+unfocused-split-fill = #44464f
+
+# Tab configuration
+gtk-titlebar = false
+
+# Shell integration
+shell-integration = detect
+shell-integration-features = cursor,sudo,title,no-cursor,ssh-terminfo,ssh-env
+keybind = shift+enter=text:\n
+
+# Rando stuff
+gtk-single-instance = true
+
+# Dank color generation
+theme = dankcolors

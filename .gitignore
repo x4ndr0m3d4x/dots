@@ -11,6 +11,12 @@
 !quickshell/**/*
 !ghostty
 !ghostty/**/*
+!fastfetch
+!fastfetch/**/*
+!fish
+!fish/**/*
+!hypr
+!hypr/**/*
 
 # But add lazy-lock.json
 nvim/lazy-lock.json
