@@ -27,7 +27,7 @@ map("n", "<leader>gI", function() Snacks.picker.gh_issue({ state = "all", focus 
 map("n", "<leader>gp", function() Snacks.picker.gh_pr({ focus = "list" }) end, { desc = "GitHub Pull Requests (open)" })
 map("n", "<leader>gP", function() Snacks.picker.gh_pr({ state = "all", focus = "list" }) end,
     { desc = "GitHub Pull Requests (all)" })
-map("n", "<leader>t",
+map("n", "<leader>td",
     function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" }, show_empty = true, focus = "list" }) end,
     { desc = "Browse Todo's" })
 
