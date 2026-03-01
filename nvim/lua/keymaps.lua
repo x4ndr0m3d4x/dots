@@ -50,3 +50,4 @@ map("n", "<leader>ai", function() require("sidekick.cli").toggle({ name = "copil
 -- map("n", "<leader>dt", require("dap").step_out, { desc = "Debug - step out", noremap = true, silent = true })
 -- map("n", "<leader>db", require("dap").step_back, { desc = "Debug - step back", noremap = true, silent = true })
 -- map("n", "<leader>dc", require("dap").run_to_cursor, { desc = "Debug - run to cursor", noremap = true, silent = true })
+--
