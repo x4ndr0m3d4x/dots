@@ -1,4 +1,5 @@
 require('plugins.animations')
+require('plugins.autoparen')
 require('plugins.blink_cmp')
 require('plugins.blink_indent')
 require('plugins.buffers')
