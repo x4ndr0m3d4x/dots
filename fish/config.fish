@@ -44,6 +44,7 @@ if status is-interactive
     end
 
     set fish_greeting
+    fish_ssh_agent
 
     fastfetch
 end
