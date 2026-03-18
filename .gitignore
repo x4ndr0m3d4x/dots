@@ -17,6 +17,8 @@
 !fish/**/*
 !hypr
 !hypr/**/*
+!pipewire
+!pipewire/**/*
 
 # But add lazy-lock.json
 nvim/lazy-lock.json
